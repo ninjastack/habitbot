@@ -5,8 +5,6 @@ import { get as httpGet } from 'https';
 
 var config;
 
-console.log("process??", process.env);
-
 if(process.env.SLACK_HABITICA_BOT_UID && process.env.SLACK_HABITICA_BOT_KEY && process.env.SLACK_HABITICA_BOT_GROUPID) {
 	config = {
 		uid: process.env.SLACK_HABITICA_BOT_UID,

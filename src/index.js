@@ -102,3 +102,7 @@ slack.on('error', (err) => console.error(err));
 
 // let's go
 slack.login();
+
+require("http").createServer(function(req, res) {
+    res.end('SLACK_HABITICA_BOT');
+}).listen(process.env.PORT || 5000);

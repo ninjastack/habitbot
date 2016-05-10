@@ -3,8 +3,8 @@ import { Promise } from 'bluebird';
 import { readFileSync } from 'fs';
 import { get as httpGet } from 'https';
 
-
-if(process.env.SLACK_HABITICA_BOT_TOKEN && process.env.SLACK_HABITICA_BOT_TOKEN && process.env.SLACK_HABITICA_BOT_TOKEN) {
+console.log("process??", process.env);
+if(process.env.SLACK_HABITICA_BOT_UID && process.env.SLACK_HABITICA_BOT_KEY && process.env.SLACK_HABITICA_BOT_GROUPID) {
 	const config = {
 		uid: process.env.SLACK_HABITICA_BOT_UID,
 		key: process.env.SLACK_HABITICA_BOT_KEY,

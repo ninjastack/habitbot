@@ -27,7 +27,7 @@ var _commands = require('./commands');
 var commands = _interopRequireWildcard(_commands);
 
 // import api token
-var token = (0, _fs.readFileSync)('apiToken', { encoding: 'utf8' });
+var token = process.env.SLACK_HABITICA_BOT_TOKEN || (0, _fs.readFileSync)('apiToken', { encoding: 'utf8' });
 var autoReconnect = true;
 var autoMark = true;
 

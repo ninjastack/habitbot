@@ -11,7 +11,19 @@ var _fs = require('fs');
 
 var _https = require('https');
 
-var config = JSON.parse((0, _fs.readFileSync)('habit.json'));
+var config;
+
+console.log("process??", process.env);
+
+if (process.env.SLACK_HABITICA_BOT_UID && process.env.SLACK_HABITICA_BOT_KEY && process.env.SLACK_HABITICA_BOT_GROUPID) {
+	config = {
+		uid: process.env.SLACK_HABITICA_BOT_UID,
+		key: process.env.SLACK_HABITICA_BOT_KEY,
+		groupId: process.env.SLACK_HABITICA_BOT_GROUPID
+	};
+} else {
+	config = JSON.parse((0, _fs.readFileSync)('habit.json'));
+}
 
 function parseJSON(resolve, reject, response) {
 	var jsonBody = '';

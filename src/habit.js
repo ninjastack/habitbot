@@ -3,7 +3,7 @@ import { Promise } from 'bluebird';
 import { readFileSync } from 'fs';
 import { get as httpGet } from 'https';
 
-const config;
+var config;
 
 console.log("process??", process.env);
 
@@ -14,8 +14,7 @@ if(process.env.SLACK_HABITICA_BOT_UID && process.env.SLACK_HABITICA_BOT_KEY && p
 		groupId: process.env.SLACK_HABITICA_BOT_GROUPID
 	};
 } else {
-	console.log("WHAT THE FUCKING FUCK????");
-	// config = JSON.parse(readFileSync('habit.json'));
+	config = JSON.parse(readFileSync('habit.json'));
 }
 
 function parseJSON(resolve, reject, response) {

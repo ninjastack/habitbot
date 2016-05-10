@@ -3,15 +3,18 @@ import { Promise } from 'bluebird';
 import { readFileSync } from 'fs';
 import { get as httpGet } from 'https';
 
+const config;
+
 console.log("process??", process.env);
+
 if(process.env.SLACK_HABITICA_BOT_UID && process.env.SLACK_HABITICA_BOT_KEY && process.env.SLACK_HABITICA_BOT_GROUPID) {
-	const config = {
+	config = {
 		uid: process.env.SLACK_HABITICA_BOT_UID,
 		key: process.env.SLACK_HABITICA_BOT_KEY,
 		groupId: process.env.SLACK_HABITICA_BOT_GROUPID
 	};
 } else {
-	const config = JSON.parse(readFileSync('habit.json'));
+	config = JSON.parse(readFileSync('habit.json'));
 }
 
 function parseJSON(resolve, reject, response) {

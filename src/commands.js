@@ -5,6 +5,25 @@ import { habitApi } from './habit.js';
 import { has, get } from 'lodash/object';
 import * as alerts from './alerts';
 
+const help_text = {
+
+	"default": 
+`I am a helper bot for your Habitica party! Here is my current list of commands:
+	- say <message>: say something in your channel
+	- list: get the current list of party members
+	- stats <stat>: get the current value of <stat> for each party member. Type 'help stats' for more info.
+	- chat <limit>: get the last <limit> chat messages for the party.
+	- partyData <path>: retrieve the raw group object and output the value at <path> [volatile]
+If you have any questions, concerns, or praise, heap it upon lilactown. Thanks!`,
+
+	"stats":
+`Example: @habitbot: stats hp
+	Available stats are: per, int, con, str, points, class, lvl, gp, exp, mp, hp`,
+	"chat":
+`Example: @habitbot: chat 50
+	Returns the last N (i.e. 50) chat messages from the party chat`
+};
+
 function sendToChannel(channel) {
 	return function (text) {
 		channel.send(text);
@@ -28,21 +47,10 @@ const commands = {
 		sendToChannel(channel)(message);
 	},
 	help(channel, user, command) {
-		if (command === 'stats') {
-			 sendToChannel(channel)(
-	`Example: @habitbot: stats hp
-	Available stats are: per, int, con, str, points, class, lvl, gp, exp, mp, hp`
-			 );
-		}
-		else {
-			sendToChannel(channel)(
-	`I am a helper bot for your Habitica party! Here is my current list of commands:
-	- say <message>: say something in your channel
-	- list: get the current list of party members
-	- stats <stat>: get the current value of <stat> for each party member. Type 'help stats' for more info.
-	- partyData <path>: retrieve the raw group object and output the value at <path> [volatile]
-	If you have any questions, concerns, or praise, heap it upon lilactown. Thanks!`
-			);
+		if(has(help_text,command)) {
+			sendToChannel(channel)(help_text[command]);
+		} else {
+			sendToChannel(channel)(help_text.default);
 		}
 	},
 	say(channel, user, ...parts) {
@@ -67,6 +75,17 @@ const commands = {
 			.getParty()
 			.then(getPath)
 			.then(sendValue)
+			.catch((err) => console.error(err));
+	},
+	chat(channel,user,limit=10) {
+		const send = sendToChannel(channel);
+		send(`Last ${limit} party chat messages:`);
+		habitApi
+			.getParty()
+			.then((json) => json.chat.slice(0,limit))
+			.then((chats) => chats.map((chat) => `(${(new Date(chat.timestamp)).toLocaleString('en-US')}) ${chat.user || 'habitica'}: ${chat.text}`))
+			.then((log) => log.reduce((agg,n) => (agg ? agg + '\n' + n : n )))
+			.then(send)
 			.catch((err) => console.error(err));
 	},
 	list(channel, user) {

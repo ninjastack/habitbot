@@ -10,7 +10,7 @@ import * as commands from './commands';
 
 
 // import api token
-const token = readFileSync('apiToken', { encoding: 'utf8' });
+const token = process.env.SLACK_HABITICA_BOT_TOKEN || readFileSync('apiToken', { encoding: 'utf8' });
 const autoReconnect = true;
 const autoMark = true;
 
@@ -28,6 +28,8 @@ function parseCommand(channel, user, text) {
 	const [command, ...args] = text.split(' ');
 	if (isCommand(command)) {
 		runCommand(command, channel, user, ...args);
+	} else {
+		console.log("not a command", command);
 	}
 }
 
@@ -48,6 +50,10 @@ function currentGroups(groups) {
 function isDirect(id, text) {
 	const tag = `<@${id}>`;
 	return text && text.substr(0, tag.length) === tag;
+}
+
+function isDM(message) {
+	return message && message.channel[0] == "D";
 }
 
 function stripTag(id, text) {
@@ -78,6 +84,17 @@ slack.on('message', (message) => {
 		console.log(`[${type}:#${channelName}] ${userName} ${ts}> ${msg}`);
 
 		parseCommand(channel, user, msg);
+	} else {
+		if(isDM(message)) {
+			console.log("new DM from ", user.name);
+			console.log("dm channel:", channel.id);
+			console.log(text);
+
+			console.log(`[DM:@${user.name}] ${ts}> ${text}`);
+
+			parseCommand(channel, user, text);
+			// now we need to break the message down into commands and route properly
+		}
 	}
 });
 

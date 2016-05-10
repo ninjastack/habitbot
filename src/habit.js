@@ -5,11 +5,11 @@ import { get as httpGet } from 'https';
 
 var config;
 
-if(process.env.SLACK_HABITICA_BOT_UID && process.env.SLACK_HABITICA_BOT_KEY && process.env.SLACK_HABITICA_BOT_GROUPID) {
+if(process.env.SLACK_HABITICA_BOT_UID && process.env.SLACK_HABITICA_BOT_KEY && process.env.SLACK_HABITICA_BOT_GID) {
 	config = {
 		uid: process.env.SLACK_HABITICA_BOT_UID,
 		key: process.env.SLACK_HABITICA_BOT_KEY,
-		groupId: process.env.SLACK_HABITICA_BOT_GROUPID
+		groupId: process.env.SLACK_HABITICA_BOT_GID
 	};
 } else {
 	config = JSON.parse(readFileSync('habit.json'));

@@ -4,13 +4,16 @@
 To run:
 
 1. Clone repo
-2. `npm install; grunt`
-3. Create a `apiToken` file containing your slackbot's token
-4. Create a `habit.json` file containing your user ID, api key and groupId for your party
-5. `npm start`
+1. `npm install; grunt`
+1. Create a `apiToken` file containing your slackbot's token
+1. Create a `habit.json` file containing your user ID, api key and groupId for your party
+1. `npm start`
 
 to deploy to heroku:
 
 1. `heroku create`
-2. `heroku config:set SLACK_HABITICA_BOT_TOKEN=[Your API token]`
-3. `git push heroku master`
+1. `heroku config:set SLACK_HABITICA_BOT_TOKEN=[Your Slackbot API token]`
+1. `heroku config:set SLACK_HABITICA_BOT_UID=[Your Habitica UserId]`
+1. `heroku config:set SLACK_HABITICA_BOT_KEY=[Your Habitica Secret Key]`
+1. `heroku config:set SLACK_HABITICA_BOT_GID=[Your Habitica GroupId]`
+1. `git push heroku master`

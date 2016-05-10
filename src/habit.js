@@ -14,7 +14,8 @@ if(process.env.SLACK_HABITICA_BOT_UID && process.env.SLACK_HABITICA_BOT_KEY && p
 		groupId: process.env.SLACK_HABITICA_BOT_GROUPID
 	};
 } else {
-	config = JSON.parse(readFileSync('habit.json'));
+	console.log("WHAT THE FUCKING FUCK????");
+	// config = JSON.parse(readFileSync('habit.json'));
 }
 
 function parseJSON(resolve, reject, response) {

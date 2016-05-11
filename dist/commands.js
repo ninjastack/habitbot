@@ -19,6 +19,7 @@ var help_text = {
 	"default": 'I am a helper bot for your Habitica party! Here is my current list of commands:\n\t- say <message>: say something in your channel\n\t- list: get the current list of party members\n\t- stats <stat>: get the current value of <stat> for each party member. Type \'help stats\' for more info.\n\t- chat <limit>: get the last <limit> chat messages for the party.\n\t- partyData <path>: retrieve the raw group object and output the value at <path> [volatile]\nIf you have any questions, concerns, or praise, heap it upon lilactown. Thanks!',
 
 	"stats": 'Example: @habitbot: stats hp\n\tAvailable stats are: per, int, con, str, points, class, lvl, gp, exp, mp, hp',
+
 	"chat": 'Example: @habitbot: chat 50\n\tReturns the last N (i.e. 50) chat messages from the party chat'
 };
 
@@ -92,7 +93,7 @@ var commands = {
 			return json.chat.slice(0, limit);
 		}).then(function (chats) {
 			return chats.map(function (chat) {
-				return '(' + new Date(chat.timestamp).toLocaleString('en-US') + ') ' + (chat.user || 'habitica') + ': ' + chat.text;
+				return '(' + new Date(chat.timestamp).toLocaleString('en-US', { timeZone: 'America/New_York' }) + ') ' + (chat.user || 'habitica') + ': ' + chat.text;
 			});
 		}).then(function (log) {
 			return log.reduce(function (agg, n) {

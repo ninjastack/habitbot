@@ -19,6 +19,7 @@ If you have any questions, concerns, or praise, heap it upon lilactown. Thanks!`
 	"stats":
 `Example: @habitbot: stats hp
 	Available stats are: per, int, con, str, points, class, lvl, gp, exp, mp, hp`,
+
 	"chat":
 `Example: @habitbot: chat 50
 	Returns the last N (i.e. 50) chat messages from the party chat`
@@ -83,7 +84,7 @@ const commands = {
 		habitApi
 			.getParty()
 			.then((json) => json.chat.slice(0,limit))
-			.then((chats) => chats.map((chat) => `(${(new Date(chat.timestamp)).toLocaleString('en-US')}) ${chat.user || 'habitica'}: ${chat.text}`))
+			.then((chats) => chats.map((chat) => `(${(new Date(chat.timestamp)).toLocaleString('en-US', { timeZone:'America/New_York' })}) ${chat.user || 'habitica'}: ${chat.text}`))
 			.then((log) => log.reduce((agg,n) => (agg ? agg + '\n' + n : n )))
 			.then(send)
 			.catch((err) => console.error(err));

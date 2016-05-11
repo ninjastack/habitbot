@@ -103,6 +103,17 @@ slack.on('error', (err) => console.error(err));
 // let's go
 slack.login();
 
+var responses = [
+	"Huh?  What?  I'm totally awake...",
+	"FUCKING WHAT?!",
+	"I live to serve.",
+	"Moar work?",
+	"Assphinctersayswhat?",
+	"I am here.",
+	"There's always money in the banana stand..."
+];
+
 require("http").createServer(function(req, res) {
-    res.end('SLACK_HABITICA_BOT');
+	console.log("Wake-up call.");
+    res.end(responses[Math.floor(Math.random()*responses.length)]);
 }).listen(process.env.PORT || 5000);

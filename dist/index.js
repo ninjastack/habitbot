@@ -141,6 +141,6 @@ var responses = ["Huh?  What?  I'm totally awake...", "FUCKING WHAT?!", "I live 
 
 require("http").createServer(function (req, res) {
 	console.log("Wake-up call.");
-	res.end(responses[Math.floor(Math.random() * responses.length)]);
+	res.json({ response_type: "in_channel", text: responses[Math.floor(Math.random() * responses.length)] });
 }).listen(process.env.PORT || 5000);
 //# sourceMappingURL=index.js.map

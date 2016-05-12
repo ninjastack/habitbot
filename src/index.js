@@ -116,5 +116,5 @@ var responses = [
 require("http").createServer(function(req, res) {
 	console.log("Wake-up call.");
 	res.writeHead(200,{"Content-Type": "application/json"});
-    res.send(JSON.stringify({ response_type: "in_channel", text: responses[Math.floor(Math.random()*responses.length)] }));
+    res.end(JSON.stringify({ response_type: "in_channel", text: responses[Math.floor(Math.random()*responses.length)] }));
 }).listen(process.env.PORT || 5000);

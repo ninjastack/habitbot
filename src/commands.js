@@ -95,6 +95,7 @@ const commands = {
 			.getParty()
 			.then((json) => json.chat.slice(0,limit))
 			.then((chats) => chats.map((chat) => { 
+					console.log()
 					return {
 						"text": `(${moment(chat.timestamp).calendar()}) *${chat.user || 'habitica'}*: ${chat.text}`,
 						"color": (!chat.user) ? (/attacks party for [^0]/i.test(chat.text) ? "danger" : "good") : "#439FE0",
@@ -103,7 +104,8 @@ const commands = {
 				})
 			)
 			.then((atts) => { 
-				_chat.attachments = atts.reverse();
+				atts.reverse();
+				_chat.attachments = atts;
 				return channel.postMessage(_chat);
 			})
 			.catch((err) => console.error(err));

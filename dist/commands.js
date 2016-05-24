@@ -4,7 +4,13 @@
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
 var _bluebird = require('bluebird');
+
+var _moment = require('moment');
+
+var _moment2 = _interopRequireDefault(_moment);
 
 var _habitJs = require('./habit.js');
 
@@ -88,18 +94,30 @@ var commands = {
 		var limit = arguments.length <= 2 || arguments[2] === undefined ? 10 : arguments[2];
 
 		var send = sendToChannel(channel);
-		send('Last ' + limit + ' party chat messages:');
+		var _chat = {
+			"text": 'Last ' + limit + ' party chat messages:',
+			"as_user": true,
+			"token": channel._client.token
+		};
+
+		if (limit > 20) {
+			limit = 20;
+		}
+
 		_habitJs.habitApi.getParty().then(function (json) {
 			return json.chat.slice(0, limit);
 		}).then(function (chats) {
 			return chats.map(function (chat) {
-				return '(' + new Date(chat.timestamp).toLocaleString('en-US', { timeZone: 'America/New_York' }) + ') ' + (chat.user || 'habitica') + ': ' + chat.text;
+				return {
+					"text": '(' + (0, _moment2['default'])(chat.timestamp).calendar() + ') *' + (chat.user || 'habitica') + '*: ' + chat.text,
+					"color": !chat.user ? /attacks party for [^0]/i.test(chat.text) ? "danger" : "good" : "#439FE0",
+					"mrkdwn_in": ["text"]
+				};
 			});
-		}).then(function (log) {
-			return log.reduce(function (agg, n) {
-				return agg ? agg + '\n' + n : n;
-			});
-		}).then(send)['catch'](function (err) {
+		}).then(function (atts) {
+			_chat.attachments = atts;
+			return channel.postMessage(_chat);
+		})['catch'](function (err) {
 			return console.error(err);
 		});
 	},

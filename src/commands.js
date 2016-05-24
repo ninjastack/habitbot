@@ -1,6 +1,7 @@
 // commands file
 
 import { Promise } from 'bluebird';
+import moment from 'moment';
 import { habitApi } from './habit.js';
 import { has, get } from 'lodash/object';
 import * as alerts from './alerts';
@@ -80,13 +81,31 @@ const commands = {
 	},
 	chat(channel,user,limit=10) {
 		const send = sendToChannel(channel);
-		send(`Last ${limit} party chat messages:`);
+		const _chat = {
+			"text": `Last ${limit} party chat messages:`,
+			"as_user": true,
+			"token": channel._client.token
+		};
+
+		if(limit>20) {
+			limit = 20;
+		}
+
 		habitApi
 			.getParty()
 			.then((json) => json.chat.slice(0,limit))
-			.then((chats) => chats.map((chat) => `(${(new Date(chat.timestamp)).toLocaleString('en-US', { timeZone:'America/New_York' })}) ${chat.user || 'habitica'}: ${chat.text}`))
-			.then((log) => log.reduce((agg,n) => (agg ? agg + '\n' + n : n )))
-			.then(send)
+			.then((chats) => chats.map((chat) => { 
+					return {
+						"text": `(${moment(chat.timestamp).calendar()}) *${chat.user || 'habitica'}*: ${chat.text}`,
+						"color": (!chat.user) ? (/attacks party for [^0]/i.test(chat.text) ? "danger" : "good") : "#439FE0",
+						"mrkdwn_in": ["text"]
+					};
+				})
+			)
+			.then((atts) => { 
+				_chat.attachments = atts;
+				return channel.postMessage(_chat);
+			})
 			.catch((err) => console.error(err));
 	},
 	list(channel, user) {

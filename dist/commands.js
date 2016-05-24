@@ -108,6 +108,7 @@ var commands = {
 			return json.chat.slice(0, limit);
 		}).then(function (chats) {
 			return chats.map(function (chat) {
+				console.log();
 				return {
 					"text": '(' + (0, _moment2['default'])(chat.timestamp).calendar() + ') *' + (chat.user || 'habitica') + '*: ' + chat.text,
 					"color": !chat.user ? /attacks party for [^0]/i.test(chat.text) ? "danger" : "good" : "#439FE0",
@@ -115,7 +116,7 @@ var commands = {
 				};
 			});
 		}).then(function (atts) {
-			_chat.attachments = atts;
+			_chat.attachments = atts.reverse();
 			return channel.postMessage(_chat);
 		})['catch'](function (err) {
 			return console.error(err);

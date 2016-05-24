@@ -104,8 +104,7 @@ const commands = {
 				})
 			)
 			.then((atts) => { 
-				atts.reverse();
-				_chat.attachments = atts;
+				_chat.attachments = atts.reverse();
 				return channel.postMessage(_chat);
 			})
 			.catch((err) => console.error(err));

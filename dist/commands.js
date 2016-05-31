@@ -20,7 +20,7 @@ var _alerts2 = require('./alerts');
 
 var _alerts = _interopRequireWildcard(_alerts2);
 
-_momentTimezone2['default'].tz.setDefault("America/Los_Angeles");
+_momentTimezone2['default'].tz.setDefault("America/New_York");
 
 var help_text = {
 

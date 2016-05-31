@@ -1,10 +1,13 @@
 // commands file
 
 import { Promise } from 'bluebird';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import { habitApi } from './habit.js';
 import { has, get } from 'lodash/object';
 import * as alerts from './alerts';
+
+
+moment.tz.setDefault("America/New_York");
 
 const help_text = {
 
@@ -95,7 +98,7 @@ const commands = {
 			.getParty()
 			.then((json) => json.chat.slice(0,limit))
 			.then((chats) => chats.map((chat) => { 
-					console.log()
+					console.log(chat.timestamp);
 					return {
 						"text": `(${moment(chat.timestamp).calendar()}) *${chat.user || 'habitica'}*: ${chat.text}`,
 						"color": (!chat.user) ? (/attacks party for [^0]/i.test(chat.text) ? "danger" : "good") : "#439FE0",

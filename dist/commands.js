@@ -8,9 +8,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
 
 var _bluebird = require('bluebird');
 
-var _moment = require('moment');
+var _momentTimezone = require('moment-timezone');
 
-var _moment2 = _interopRequireDefault(_moment);
+var _momentTimezone2 = _interopRequireDefault(_momentTimezone);
 
 var _habitJs = require('./habit.js');
 
@@ -19,6 +19,8 @@ var _lodashObject = require('lodash/object');
 var _alerts2 = require('./alerts');
 
 var _alerts = _interopRequireWildcard(_alerts2);
+
+_momentTimezone2['default'].tz.setDefault("America/Los_Angeles");
 
 var help_text = {
 
@@ -108,9 +110,9 @@ var commands = {
 			return json.chat.slice(0, limit);
 		}).then(function (chats) {
 			return chats.map(function (chat) {
-				console.log();
+				console.log(chat.timestamp);
 				return {
-					"text": '(' + (0, _moment2['default'])(chat.timestamp).calendar() + ') *' + (chat.user || 'habitica') + '*: ' + chat.text,
+					"text": '(' + (0, _momentTimezone2['default'])(chat.timestamp).calendar() + ') *' + (chat.user || 'habitica') + '*: ' + chat.text,
 					"color": !chat.user ? /attacks party for [^0]/i.test(chat.text) ? "danger" : "good" : "#439FE0",
 					"mrkdwn_in": ["text"]
 				};

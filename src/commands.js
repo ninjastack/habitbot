@@ -85,7 +85,7 @@ const commands = {
 	},
 	flip(channel, user, a, b) {
 		const send = sendToChannel(channel);
-		send((crypto.randomBytes(1)[0]<127) ? a : b);
+		send((crypto.randomBytes(1)[0]<128) ? a : b);
 	},
 	chat(channel,user,limit=10) {
 		const send = sendToChannel(channel);

@@ -6,6 +6,10 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
+var _crypto = require('crypto');
+
+var _crypto2 = _interopRequireDefault(_crypto);
+
 var _bluebird = require('bluebird');
 
 var _momentTimezone = require('moment-timezone');
@@ -91,6 +95,10 @@ var commands = {
 		_habitJs.habitApi.getParty().then(getPath).then(sendValue)['catch'](function (err) {
 			return console.error(err);
 		});
+	},
+	flip: function flip(channel, user, a, b) {
+		var send = sendToChannel(channel);
+		send(_crypto2['default'].randomBytes(1)[0] < 127 ? a : b);
 	},
 	chat: function chat(channel, user) {
 		var limit = arguments.length <= 2 || arguments[2] === undefined ? 10 : arguments[2];

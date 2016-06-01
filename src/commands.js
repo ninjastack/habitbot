@@ -1,5 +1,6 @@
 // commands file
 
+import crypto from 'crypto';
 import { Promise } from 'bluebird';
 import moment from 'moment-timezone';
 import { habitApi } from './habit.js';
@@ -81,6 +82,10 @@ const commands = {
 			.then(getPath)
 			.then(sendValue)
 			.catch((err) => console.error(err));
+	},
+	flip(channel, user, a, b) {
+		const send = sendToChannel(channel);
+		send((crypto.randomBytes(1)[0]<127) ? a : b);
 	},
 	chat(channel,user,limit=10) {
 		const send = sendToChannel(channel);

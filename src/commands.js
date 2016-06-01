@@ -7,7 +7,6 @@ import { habitApi } from './habit.js';
 import { has, get } from 'lodash/object';
 import * as alerts from './alerts';
 
-
 moment.tz.setDefault("America/New_York");
 
 const help_text = {
@@ -27,7 +26,11 @@ If you have any questions, concerns, or praise, heap it upon lilactown. Thanks!`
 
 	"chat":
 `Example: @habitbot: chat 50
-	Returns the last N (i.e. 50) chat messages from the party chat`
+	Returns the last N (i.e. 50) chat messages from the party chat`,
+
+	"flip":
+`Example: @habitbot: flip heads tails
+	Returns the winnder of a coin flip between the 2 values passed in`
 };
 
 function sendToChannel(channel) {
@@ -85,7 +88,8 @@ const commands = {
 	},
 	flip(channel, user, a, b) {
 		const send = sendToChannel(channel);
-		send((crypto.randomBytes(1)[0]<128) ? a : b);
+		// send((crypto.randomBytes(1)[0]<128) ? a : b);
+		send((Math.random()<0.5) ? a : b);
 	},
 	chat(channel,user,limit=10) {
 		const send = sendToChannel(channel);
